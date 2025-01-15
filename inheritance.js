@@ -3,6 +3,8 @@ const HtmlElement = function (type, textContent) {
     this.type = type;
     this.textContent = textContent;
     this.id = global_id++;
+    if(new.target)
+      throw new Error("cannot create an instance from abstract class")
 }
 HtmlElement.prototype.render = function () {
    return `<${this.type}>${this.textContent}</${this.type}>`
@@ -36,19 +38,35 @@ HtmlElement.prototype.constructor = HtmlElement;
 function createElements() {
     const caption = document.getElementById("caption1").value;
     const elementType = document.getElementById("element-type").value;
-    const element = new HtmlElement(elementType, caption);
-    document.body.innerHTML += element.render(); 
+    try{
+       const element = new HtmlElement(elementType, caption);
+       document.body.innerHTML += element.render(); 
+    }
+    catch(error){
+        console.log(error.message);
+    }
 }
 
 function createPicture() {
     const alt = document.getElementById("alt").value;
     const src = document.getElementById("src").value;
-    const pic = new ImageElement(src, alt);
-    document.body.innerHTML += pic.render(); 
+    try{
+        const pic = new ImageElement(src, alt);
+        document.body.innerHTML += pic.render(); 
+    }
+    catch(error){
+        console.log(error.message);
+    }
+
 }
 
-function createSelect() {
+function createSelect() {    
     const lst = document.getElementById("lst").value.split(",");
-    const sel = new SelectElement(lst);
-    document.body.innerHTML += sel.render(); 
+    try{
+        const sel = new SelectElement(lst);
+    }
+    catch(error){
+        document.body.innerHTML += sel.render(); 
+    }
+    
 }
